@@ -3,6 +3,8 @@ package Games;
 import Loggers.ActiveGamesLogManager;
 import Loggers.IActiveGamesLogManager;
 import Loggers.IFinishedGamesManager;
+import ObservableLayer.IObservableHandler;
+import ObservableLayer.ObservableHandler;
 import Users.IAccountManager;
 import Users.NoMuchMoney;
 import Users.Wallet;
@@ -41,6 +43,7 @@ public class Game implements IGame {
     private boolean locked = false;
     private String type = "nurmal";
     private boolean inStart = true;
+    IObservableHandler handler;
     @Transient
     private GameLogger logger;
 
@@ -54,6 +57,7 @@ public class Game implements IGame {
         this.league = league;
         this.spectators = new ArrayList<>();
         chat = new Chat();
+        handler = ObservableHandler.getInstance();
     }
 
     @Override
@@ -167,7 +171,9 @@ public class Game implements IGame {
             player.wallet.sub(currentMinimumBet);
 
             playerDesk.set(turnId, this.currentMinimumBet);
-            endTurn(player);}else{
+            handler.sendSomeoneRaised(player.getName(), getId(), amount);
+            endTurn(player);
+            }else{
                 throw new NotLegalAmount(amount, currentMinimumBet);
             }
         }else
@@ -178,6 +184,7 @@ public class Game implements IGame {
     public void fold(Player player) throws NotYourTurn {
 
         if (desk.get(turnId).equals(player)) {
+            handler.sendSomeoneFold(player.getName(),getId());
             desk.remove(turnId);
             if(desk.size() == 1){
                 win(desk.get(0));
@@ -232,7 +239,7 @@ public class Game implements IGame {
                 winner.getWallet().add(pot);
                 //          pot = 0;
             }
-
+            handler.sendSomeoneWinner(player.getName(),getId());
             pot = 0;
         }
     }
@@ -351,6 +358,7 @@ public class Game implements IGame {
                 playerDesk.set(turnId, amount);
                 player.wallet.sub(amount);
                 currentMinimumBet = amount;
+                handler.sendSomeoneCall(player.getName(), getId(), amount);
                 endTurn(player);
             }else{
                 throw new NotLegalAmount(amount, currentMinimumBet);
@@ -364,6 +372,7 @@ public class Game implements IGame {
         if (desk.get(turnId).equals(player)) {
             playerDesk.set(turnId, currentMinimumBet);
             player.wallet.sub(currentMinimumBet);
+            handler.sendSomeoneCheck(player.getName(), getId());
             endTurn(player);
         }else
             throw new NotYourTurn();
@@ -384,6 +393,7 @@ public class Game implements IGame {
     public void allIn(Player player) throws NoMuchMoney, NotYourTurn, NotLegalAmount {
         if (desk.get(turnId).equals(player)) {
         call(player.wallet.getAmountOfMoney(),player);
+        handler.sendSomeoneAllIn(player.getName(), getId());
         }else
             throw new NotYourTurn();
     }
@@ -403,9 +413,18 @@ public class Game implements IGame {
         for (Player p:players) {
             desk.add(p);
             playerDesk.add(0);
+            dealCard(p);
+            dealCard(p);
+            sandState(p);
         }
+
         blinedBet();
         inStart = false;
+    }
+
+    private void sandState(Player p) {
+        GameState state = new GameState(desk, desk, flop, p.getHand(), getMinimumBet(), getPot());
+        handler.sendGameStateToPlayer(p.getName(), getId(), state);
     }
 
     private void blinedBet() throws NoMuchMoney, NotYourTurn, NotLegalAmount {
@@ -448,14 +467,23 @@ public class Game implements IGame {
                     flop.add(deck.dealCard());
                     flop.add(deck.dealCard());
                     turn++;
+                    for (Player p:players) {
+                        sandState(p);
+                    }
                     break;
                 case 2:
                     flop.add(deck.dealCard());
                     turn++;
+                    for (Player p:players) {
+                        sandState(p);
+                    }
                     break;
                 case 3:
                     flop.add(deck.dealCard());
                     turn++;
+                    for (Player p:players) {
+                        sandState(p);
+                    }
                     win(null);
                     break;
             }
