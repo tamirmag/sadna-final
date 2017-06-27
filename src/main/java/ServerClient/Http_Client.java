@@ -35,6 +35,7 @@ public class Http_Client extends AbstractVerticle {
     static ArrayList<Integer> spectatableGames=null;
     static ArrayList<Integer> ActiveGamesByLeague=null;
     static int playersNum=0;
+    static  Http_Middle_Server_Of_Client ms;
     static String address="localhost";//"132.72.226.127";//in nofar computer
     //static String address="192.168.56.1";
     public static void main(String[] args) {
@@ -42,6 +43,7 @@ public class Http_Client extends AbstractVerticle {
         options.setMaxEventLoopExecuteTime(Long.MAX_VALUE);
         Vertx vertx = Vertx.vertx(options);
         vertx.deployVerticle(new Http_Client());
+        ms = new Http_Middle_Server_Of_Client(8080);
         //HttpClient httpClient = vertx.createHttpClient();
     }
 

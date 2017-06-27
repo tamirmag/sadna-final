@@ -21,11 +21,11 @@ import Games.Card;
 
 public class Http_Middle_Server_Of_Client extends AbstractVerticle {
 
-	int port;
+	static int port;
 	
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new Http_Middle_Server_Of_Client(8089));
+        vertx.deployVerticle(new Http_Middle_Server_Of_Client(port));
     }
     
     public Http_Middle_Server_Of_Client(int port){
