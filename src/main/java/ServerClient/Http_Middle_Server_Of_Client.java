@@ -1,7 +1,11 @@
 package ServerClient;
 //package ServiceLayer;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 //import java.util.HashMap;
 //import java.util.Map;
 
@@ -25,11 +29,13 @@ public class Http_Middle_Server_Of_Client extends AbstractVerticle {
 	
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new Http_Middle_Server_Of_Client(port));
+        vertx.deployVerticle(new Http_Middle_Server_Of_Client(8080));
     }
     
     public Http_Middle_Server_Of_Client(int port){
     	this.port=port;
+        //Vertx vertx = Vertx.vertx();
+       // vertx.deployVerticle(new Http_Middle_Server_Of_Client(8080));
     }
 
     @Override
@@ -38,12 +44,12 @@ public class Http_Middle_Server_Of_Client extends AbstractVerticle {
         Router router = Router.router(vertx);
         Handler hand=new Handler();
         // Bind "/" to our hello message - so we are still compatible.
-        router.route("/").handler(routingContext -> {
+      /*  router.route("/").handler(routingContext -> {
             HttpServerResponse response = routingContext.response();
             response
                     .putHeader("content-type", "text/html")
                     .end("<h1>Hello from my first Vert.x 3 application</h1>");
-        });
+        });*/
 
         router.route("/getGameContent/:game/:content").handler(routingContext -> {
             int game = Integer.parseInt(routingContext.request().getParam("game"));
@@ -196,9 +202,26 @@ public class Http_Middle_Server_Of_Client extends AbstractVerticle {
                 .listen(
                         // Retrieve the port from the configuration,
                         // default to 8080.
-                        config().getInteger("http.port", 8089),
+                        config().getInteger("http.port", 8080),
                         result -> {
                             if (result.succeeded()) {
+                                Enumeration e = null;
+                                try {
+                                    e = NetworkInterface.getNetworkInterfaces();
+                                } catch (SocketException e1) {
+                                    e1.printStackTrace();
+                                }
+                                while(e.hasMoreElements())
+                                {
+                                    NetworkInterface n = (NetworkInterface) e.nextElement();
+                                    Enumeration ee = n.getInetAddresses();
+                                    while (ee.hasMoreElements())
+                                    {
+                                        InetAddress i = (InetAddress) ee.nextElement();
+                                        System.out.println(i.getHostAddress());
+                                    }
+                                }
+                                System.out.println("server is up!");
                                 fut.complete();
                             } else {
                                 fut.fail(result.cause());
