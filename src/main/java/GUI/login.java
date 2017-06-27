@@ -1,6 +1,7 @@
 package GUI;
 
 import ServerClient.Http_Client;
+import ServiceLayer.ServiceUser;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -45,13 +46,19 @@ public class login {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                Http_Client.login(user.getText(), password.getText());
-                JFrame homePageFrame = new JFrame("homePage");
-                homePageFrame.setContentPane(new homePage(user.getText(),homePageFrame).homePageView);
-                homePageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                homePageFrame.pack();
-                homePageFrame.setVisible(true);
-                loginFrame.setVisible(false);
+                ServiceUser user1 = Http_Client.login(user.getText(), password.getText());
+                if (user1 !=null){
+                    JFrame homePageFrame = new JFrame("homePage");
+                    homePageFrame.setContentPane(new homePage(user.getText(),homePageFrame).homePageView);
+                    homePageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    homePageFrame.pack();
+                    homePageFrame.setVisible(true);
+                    loginFrame.setVisible(false);
+                }
+                else{
+                    JOptionPane.showMessageDialog(loginFrame,"Incorrect user or password");
+                }
+
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

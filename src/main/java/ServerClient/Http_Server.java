@@ -66,6 +66,12 @@ public class Http_Server extends AbstractVerticle {
 				response.end(toSend);
 
 			} catch (Exception e) {
+				ServiceUser su = null;
+				Gson gson=new GsonBuilder().create();
+				String toSend=gson.toJson(su,ServiceUser.class);
+
+				HttpServerResponse response = routingContext.response();
+				response.end(toSend);
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -127,7 +133,12 @@ public class Http_Server extends AbstractVerticle {
 				HttpServerResponse response = routingContext.response();
 				response.end(toSend);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				ServiceUser su = null;
+				Gson gson=new GsonBuilder().create();
+				String toSend=gson.toJson(su,ServiceUser.class);
+
+				HttpServerResponse response = routingContext.response();
+				response.end(toSend);
 				e.printStackTrace();
 			}
 		});

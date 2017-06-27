@@ -36,6 +36,7 @@ public class Http_Client extends AbstractVerticle {
     static ArrayList<Integer> ActiveGamesByLeague=null;
     static int playersNum=0;
     static  Http_Middle_Server_Of_Client ms;
+    static ServiceUser user ;
     static String address="192.168.43.70";//"localhost";//"132.72.226.127";//in nofar computer
     //static String address="192.168.56.1";
     public static void main(String[] args) {
@@ -62,7 +63,7 @@ public class Http_Client extends AbstractVerticle {
     }
 
 
-    public static void  register(String username, String password, String email, int wallet) throws Exception {
+    public static ServiceUser  register(String username, String password, String email, int wallet) throws Exception {
         VertxOptions options = new VertxOptions();
         options.setMaxEventLoopExecuteTime(Long.MAX_VALUE);
         Vertx vertx = Vertx.vertx(options);
@@ -82,11 +83,15 @@ public class Http_Client extends AbstractVerticle {
                         //ServiceUser su=(ServiceUser)js2.getValue("key");
                         Gson gson=new GsonBuilder().create();
                         ServiceUser p=gson.fromJson(s,ServiceUser.class);
+                        user = p;
+                        if(p!=null)
                         System.out.println("user:"+p.getUsername()+" pass:"+p.getPassword());
                     }
                 });
             }
         });
+        TimeUnit.SECONDS.sleep(5);
+        return user;
     }
 
     public static int getPlayersNum(String gameID) throws Exception {
@@ -160,7 +165,7 @@ public class Http_Client extends AbstractVerticle {
         });
     }
 
-    public static void login(String username, String password) throws Exception {
+    public static ServiceUser login(String username, String password) throws Exception {
         VertxOptions options = new VertxOptions();
         options.setMaxEventLoopExecuteTime(Long.MAX_VALUE);
         Vertx vertx = Vertx.vertx(options);
@@ -179,11 +184,15 @@ public class Http_Client extends AbstractVerticle {
                         //ServiceUser su=(ServiceUser)js2.getValue("key");
                         Gson gson=new GsonBuilder().create();
                         ServiceUser p=gson.fromJson(s,ServiceUser.class);
+                        user = p;
+                        if(p != null)
                         System.out.println("user:"+p.getUsername()+" pass:"+p.getPassword());
                     }
                 });
             }
         });
+        TimeUnit.SECONDS.sleep(5);
+        return user;
     }
 
     public static ArrayList<Integer> findSpectatableGames(String username) throws Exception {
