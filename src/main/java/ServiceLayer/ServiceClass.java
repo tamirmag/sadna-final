@@ -60,10 +60,17 @@ public class ServiceClass implements IServiceClass {
         return i;
     }
 
+
     @Override
     public void joinGame(int gamenum, String username) throws UserNotLoggedIn, UserNotExists, NoMuchMoney, CantJoin {
         IUserManager u = new UserManager(IAccountManager.getInstance().getLoggedInUser(username));
         u.JoinGame(gamenum);
+    }
+
+    @Override
+    public void leaveGame(int gamenum, String username) throws UserNotLoggedIn, UserNotExists, NoMuchMoney, CantJoin {
+        IUserManager u = new UserManager(IAccountManager.getInstance().getLoggedInUser(username));
+        u.leaveGame(gamenum);
     }
 
     @Override

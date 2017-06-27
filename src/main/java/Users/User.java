@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 @Entity
 public class User {
+    public int getId() {
+        return id;
+    }
+
     @Id
     private int id;
     private String username;

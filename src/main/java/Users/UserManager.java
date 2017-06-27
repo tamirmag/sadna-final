@@ -218,6 +218,10 @@ public class UserManager implements IUserManager {
     {
         return IAccountManager.getInstance().getUserAverageGrossProfit(username);
     }
+
+    public void leaveGame(int gamenum) throws UserNotLoggedIn, UserNotExists, NoMuchMoney, CantJoin{
+        IActiveGamesManager.getInstance().leaveGame(gamenum,this.user , this.getUser().getId());
+    }
 }
 
 

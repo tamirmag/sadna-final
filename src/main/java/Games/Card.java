@@ -18,6 +18,18 @@ public class Card implements Comparable<Card> {
         this.suit = suit;
     }
 
+    public Color getcolor(){
+        return color; //{red,black}
+    }
+
+    public int getnum(){
+        return number.value;
+    }
+
+    public Suit getsuit(){
+        return suit; //{clubs,diamonds,hearts,spades}
+    }
+
     @Override
     public int compareTo(Card o) {
         return this.number.value - o.number.value;

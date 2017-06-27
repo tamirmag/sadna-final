@@ -67,5 +67,5 @@ public interface IUserManager {
 
     double getUserAverageGrossProfit(String username) throws UserNotExists;
 
-
+    void leaveGame(int gamenum) throws UserNotLoggedIn, UserNotExists, NoMuchMoney, CantJoin;
 }

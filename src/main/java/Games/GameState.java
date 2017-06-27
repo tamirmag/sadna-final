@@ -27,4 +27,28 @@ public class GameState {
         this.currentMinimumBet = currentMinimumBet;
         this.pot = pot;
     }
+    
+    public ArrayList<Player> getap(){
+    	return allPlayers;
+    }
+    
+    public ArrayList<Player> getnfp(){
+        return notFoldPlayers;
+    }
+    
+    public ArrayList<Card> gettc(){
+        return tableCards;
+    }
+    
+    public ArrayList<Card> getspc(){
+        return specificPlayerCards;
+    }
+    
+    public int getcmb(){
+        return currentMinimumBet;
+    }
+    
+    public int getpot(){
+    	return pot;
+    }
 }
