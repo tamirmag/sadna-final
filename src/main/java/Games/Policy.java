@@ -112,6 +112,7 @@ public abstract class Policy implements IGame {
 
     @Override
     public void startGame() throws NoMuchMoney, NotYourTurn, NotLegalAmount {
+        System.out.println("policy hare");
         this.policy.startGame();
     }
 

@@ -189,6 +189,7 @@ public class UserManager implements IUserManager {
 
     @Override
     public void startGame(int gameID) throws NotYourTurn, NoMuchMoney, NotLegalAmount {
+        System.out.println("user manager start game ");
         IActiveGamesManager.getInstance().startGame(gameID);
     }
 

@@ -50,39 +50,58 @@ public class ActiveGamesManager implements IActiveGamesManager {
         game = new Game(players, i,user.getLeague());
         game = buildByPref(pref, game);
         games.add(game);
+       // System.out.println("player "+ p.getName() +"was added to game " +i);
        // System.out.println(games.size());
         return i;
     }
 
     private IGame buildByPref(Preferences pref, IGame game) {
-        if (pref.isNoLimitHoldem())
+        if (pref.isNoLimitHoldem()) {
             game = new NoLimitHoldem(game);
+   //         System.out.println("no limit");
+        }
 
-        if (pref.isLimitHoldem())
+        if (pref.isLimitHoldem()) {
             game = new LimitHoldem(game);
+    //        System.out.println("limit");
+        }
 
-        if (pref.isPotLimitHoldem())
+        if (pref.isPotLimitHoldem()) {
             game = new PotLimitHoldem(game);
+     //       System.out.println("pot limit");
+        }
 
-        if (pref.getBuyInPolicy() > 0)
+        if (pref.getBuyInPolicy() > 0) {
             game = new BuyInPolicy(game, pref.getBuyInPolicy());
+     //       System.out.println("buy in");
+        }
 
-        if (pref.getChipPolicy() > 0)
+        if (pref.getChipPolicy() > 0) {
             game = new ChipPolicy(game, pref.getChipPolicy());
+      //      System.out.println("chip");
+        }
 
-        if (pref.getMaxAmountPolicy() > 0)
+        if (pref.getMaxAmountPolicy() > 0) {
             game = new MaxAmountPolicy(game, pref.getMaxAmountPolicy());
+     //       System.out.println("max amount");
+        }
 
-        if (pref.getMinAmountPolicy() > 0)
+        if (pref.getMinAmountPolicy() > 0) {
             game = new MinAmountPolicy(game, pref.getMinAmountPolicy());
+    //        System.out.println("minimum amount");
+        }
 
-        if (pref.getMinBetPolicy() > 0)
+        if (pref.getMinBetPolicy() > 0) {
             game = new MinBetPolicy(game, pref.getMinBetPolicy());
+      //      System.out.println("minimum bet");
+        }
 
-        if (pref.isSpectatePolicy())
+        if (pref.isSpectatePolicy()) {
             game = new SpectatePolicy(game, pref.isSpectatePolicy());
+      //      System.out.println("spectate");
+        }
 
-
+    //    System.out.println("game");
         return game;
     }
 
@@ -103,6 +122,7 @@ public class ActiveGamesManager implements IActiveGamesManager {
     @Override
     public void startGame(int id) throws NoMuchMoney, NotYourTurn, NotLegalAmount {
         IGame myGame = find(id);
+    //    System.out.println("active games manager start game ");
         myGame.startGame();
     }
 

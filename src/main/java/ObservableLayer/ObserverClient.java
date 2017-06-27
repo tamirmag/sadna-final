@@ -50,6 +50,7 @@ public class ObserverClient extends AbstractVerticle implements IObserverClient 
         HttpClient httpClient = vertx.createHttpClient();
         httpClient.getNow(port, ipAddress, "/getGameState/" + game + "/" + s, httpClientResponse -> {
         });
+        System.out.println("in observerclient , sending game state to player " + player.getName());
     }
 
     public void sendSomeoneFold(ObservablePlayer player, int game, String foldedPlayer) {

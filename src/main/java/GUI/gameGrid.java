@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Nofar on 22/06/2017.
@@ -59,6 +60,7 @@ public class gameGrid {
                     try {
 
                         Http_Client.startGame(username, gameNum);
+                        TimeUnit.SECONDS.sleep(15);
                         System.out.println("nom of yoooooni"+Http_Client.getPlayersNum(gameNum+""));
                         activate_get_game_state(gameNum,"");
                     } catch (UserNotLoggedIn userNotLoggedIn) {

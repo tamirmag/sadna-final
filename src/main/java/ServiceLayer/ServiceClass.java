@@ -231,6 +231,7 @@ public class ServiceClass implements IServiceClass {
     @Override
     public void startGame(String username, int gameID) throws UserNotLoggedIn, UserNotExists, NotYourTurn, NoMuchMoney, NotLegalAmount {
         IUserManager u = new UserManager(IAccountManager.getInstance().getLoggedInUser(username));
+        System.out.println("service class start game ");
         u.startGame(gameID);
     }
 

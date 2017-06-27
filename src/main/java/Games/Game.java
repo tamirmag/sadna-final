@@ -408,9 +408,11 @@ public class Game implements IGame {
 
     @Override
     public void startGame() throws NoMuchMoney, NotYourTurn, NotLegalAmount {
+    //    System.out.println("starting with " + players.size() + " players");
         locked = true;
         playerDesk = new ArrayList<Integer>();
         for (Player p:players) {
+     //       System.out.println("added " + p.getName()+" to game state");
             desk.add(p);
             playerDesk.add(0);
             dealCard(p);

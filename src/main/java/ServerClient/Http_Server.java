@@ -1,23 +1,27 @@
 package ServerClient;
 //package ServiceLayer;
 
-import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.Map;
-
 import ObservableLayer.IObservableHandler;
+import ServiceLayer.ServiceUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import ServiceLayer.ServiceUser;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServerResponse;
-//import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+
+//import java.util.HashMap;
+//import java.util.Map;
+//import io.vertx.core.json.JsonObject;
 
 
 public class Http_Server extends AbstractVerticle {
@@ -47,6 +51,7 @@ public class Http_Server extends AbstractVerticle {
 			String password = routingContext.request().getParam("password");
 			String email = routingContext.request().getParam("email");
 			int wallet = Integer.parseInt(routingContext.request().getParam("wallet"));
+			System.out.println("received connection from "+ username);
 			try {
 				ServiceUser su=hand.handleRegister(username,password,email,wallet);
 				//Map<String,Object> map=new HashMap<String,Object>();
@@ -71,6 +76,10 @@ public class Http_Server extends AbstractVerticle {
 			String username = routingContext.request().getParam("username");
 			int gameID = Integer.parseInt(routingContext.request().getParam("gameID"));
 			try {
+				String ipAddress = routingContext.request().remoteAddress().host();
+				int port = routingContext.request().remoteAddress().port();
+				System.out.println(username+" was joined as ip " +ipAddress +" and port "+port);
+
 				hand.handleStartGame(username,gameID);
 				HttpServerResponse response = routingContext.response();
 				response.end("game started successfully");
@@ -200,7 +209,8 @@ public class Http_Server extends AbstractVerticle {
 				//I addeed this
 				String ipAddress = routingContext.request().remoteAddress().host();
 				int port = routingContext.request().remoteAddress().port();
-				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,port, ans);
+				System.out.println(username+" was joined as ip " +ipAddress +" and port "+port);
+				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,8080, ans);
 				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end(ans+"");
@@ -234,7 +244,7 @@ public class Http_Server extends AbstractVerticle {
 				//I addeed this
 				String ipAddress = routingContext.request().remoteAddress().host();
 				int port = routingContext.request().remoteAddress().port();
-				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,port, gamenum);
+				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,8080, gamenum);
 				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end("joined successfully");
@@ -252,7 +262,7 @@ public class Http_Server extends AbstractVerticle {
 				//I addeed this
 				String ipAddress = routingContext.request().remoteAddress().host();
 				int port = routingContext.request().remoteAddress().port();
-				IObservableHandler.getInstance().attachSpectator(username ,ipAddress,port, gamenum);
+				IObservableHandler.getInstance().attachSpectator(username ,ipAddress,8080, gamenum);
 				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end("spectating successful");
@@ -393,8 +403,26 @@ public class Http_Server extends AbstractVerticle {
 						config().getInteger("http.port", 8081),
 						result -> {
 							if (result.succeeded()) {
+								Enumeration e = null;
+								try {
+									e = NetworkInterface.getNetworkInterfaces();
+								} catch (SocketException e1) {
+									e1.printStackTrace();
+								}
+								while(e.hasMoreElements())
+								{
+									NetworkInterface n = (NetworkInterface) e.nextElement();
+									Enumeration ee = n.getInetAddresses();
+									while (ee.hasMoreElements())
+									{
+										InetAddress i = (InetAddress) ee.nextElement();
+										System.out.println(i.getHostAddress());
+									}
+								}
+								System.out.println("server is up!");
 								fut.complete();
 							} else {
+								System.out.println("server is down!");
 								fut.fail(result.cause());
 							}
 						}

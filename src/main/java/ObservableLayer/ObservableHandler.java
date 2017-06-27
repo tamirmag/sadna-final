@@ -23,7 +23,7 @@ public class ObservableHandler implements IObservableHandler {
             players.put(game, new ArrayList<ObservablePlayer>());
         }
         players.get(game).add(player);
-
+        System.out.println("attached player "+playerName+" from game "+game);
     }
 
     public void detachPlayer(String playerName , int game)
@@ -65,6 +65,7 @@ public class ObservableHandler implements IObservableHandler {
         if (!players.containsKey(game)) return;
         for (ObservablePlayer player : players.get(game)) {
             if (player.getName().equals(playerName)) {
+                System.out.println("in observerhandler , sending game state to player " + player.getName());
                 IObserverClient.getInstance().sendGameStateToPlayer(player, game, gameState);
                 break;
             }
