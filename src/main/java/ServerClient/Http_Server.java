@@ -5,6 +5,7 @@ import java.util.ArrayList;
 //import java.util.HashMap;
 //import java.util.Map;
 
+import ObservableLayer.IObservableHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -196,6 +197,11 @@ public class Http_Server extends AbstractVerticle {
 			try {
 				int ans=hand.handleCreateGame(username, gameType, BuyInPolicy, ChipPolicy,
 						minimumBet, minimalAmountOfPlayers, maximalAmountOfPlayers, spectatingMode);
+				//I addeed this
+				String ipAddress = routingContext.request().remoteAddress().host();
+				int port = routingContext.request().remoteAddress().port();
+				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,port, ans);
+				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end(ans+"");
 			} catch (Exception e) {
@@ -209,6 +215,9 @@ public class Http_Server extends AbstractVerticle {
 			int gameNum = Integer.parseInt(routingContext.request().getParam("gameNum"));
 			try {
 				hand.handleLeaveGame(username , gameNum);
+				//I addeed this
+				IObservableHandler.getInstance().detachPlayer(username , gameNum);
+				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end("");
 			} catch (Exception e) {
@@ -222,6 +231,11 @@ public class Http_Server extends AbstractVerticle {
 			String username = routingContext.request().getParam("username");
 			try {
 				hand.handleJoinGame(gamenum, username);
+				//I addeed this
+				String ipAddress = routingContext.request().remoteAddress().host();
+				int port = routingContext.request().remoteAddress().port();
+				IObservableHandler.getInstance().attachPlayer(username ,ipAddress,port, gamenum);
+				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end("joined successfully");
 			} catch (Exception e) {
@@ -235,6 +249,11 @@ public class Http_Server extends AbstractVerticle {
 			String username = routingContext.request().getParam("username");
 			try {
 				hand.handleSpectateGame(gamenum, username);
+				//I addeed this
+				String ipAddress = routingContext.request().remoteAddress().host();
+				int port = routingContext.request().remoteAddress().port();
+				IObservableHandler.getInstance().attachSpectator(username ,ipAddress,port, gamenum);
+				//endof I addeed this
 				HttpServerResponse response = routingContext.response();
 				response.end("spectating successful");
 			} catch (Exception e) {

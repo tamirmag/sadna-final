@@ -28,4 +28,6 @@ public interface IObservableHandler {
     void sendSomeoneBet(String betPlayer, int game, int amount);
 
     void sendSomeoneCall(String callPlayer, int game, int amount);
+
+    void detachPlayer(String playerName , int game);
 }

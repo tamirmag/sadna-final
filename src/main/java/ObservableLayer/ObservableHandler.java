@@ -26,6 +26,15 @@ public class ObservableHandler implements IObservableHandler {
 
     }
 
+    public void detachPlayer(String playerName , int game)
+    {
+        for(ObservablePlayer p : players.get(game))
+        {
+            if(p.getName().equals(playerName)) players.get(game).remove(p);
+        }
+    }
+
+
     public void attachSpectator(String playerName, String ipAddress, int port, int game) {
         ObservableSpectator spectator = new ObservableSpectator(ipAddress, port, playerName);
         if (!spectators.containsKey(game)) {
