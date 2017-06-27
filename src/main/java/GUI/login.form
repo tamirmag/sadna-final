@@ -59,7 +59,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="enter your user name"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
@@ -97,7 +97,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="enter your password"/>
+              <text value=""/>
             </properties>
           </component>
         </children>

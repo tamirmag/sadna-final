@@ -16,6 +16,7 @@ public class register {
     private JTextField password;
     private JButton registerButton;
     public JPanel registerView;
+    private JTextField wallet;
 
     static public JFrame registerFrame;
 
@@ -24,13 +25,9 @@ public class register {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("new user registered:   userName: " + user.getText()+ ",  password: "+ password.getText() + "  e-mail:" + email.getText());
-                //Http_Client c = new Http_Client();
-                //System.out.println(user.getText() instanceof  String);
                 try {
-                    Http_Client.register(user.getText(), password.getText(), email.getText(), 0);
+                    Http_Client.register(user.getText(), password.getText(), email.getText(), Integer.parseInt(wallet.getText()));
                     System.out.println("new user registered:   userName: " + user.getText()+ ",  password: "+ password.getText() + "  e-mail:" + email.getText());
-
-                    //c.register(user.getText(), password.getText(), email.getText(), 0);
                 }
                 catch(Exception es) {
 
@@ -46,13 +43,8 @@ public class register {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                JFrame frame = new JFrame("login");
-//                frame.setContentPane(new login().loginView);
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                frame.pack();
                 login.loginFrame.setVisible(true);
-                //frame.setVisible(true);
-                registerFrame.setVisible(false);
+                registerFrame.dispose();
             }
         });
     }

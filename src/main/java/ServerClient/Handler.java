@@ -11,10 +11,10 @@ import Users.*;
 
 public class Handler {
 
-	ServiceClass s = new ServiceClass(); 
-	
+	ServiceClass s = new ServiceClass();
+
 	public ServiceUser handleRegister(String username, String password, String email, int wallet) throws EmailNotValid, NegativeValue, UsernameNotValid, UserAlreadyExists, PasswordNotValid {
-		return s.register(username, password, email, wallet);		
+		return s.register(username, password, email, wallet);
 	}
 
 	public ServiceUser handleLogin(String username, String password) throws UsernameAndPasswordNotMatch, AlreadyLoggedIn, UsernameNotValid, PasswordNotValid, UserNotExists {
@@ -38,7 +38,7 @@ public class Handler {
 	}
 
 	public int handleCreateGame(String username, String gameType, int buyInPolicy, int chipPolicy, int minimumBet,
-			int minimalAmountOfPlayers, int maximalAmountOfPlayers, boolean spectatingMode) throws UserNotLoggedIn, UserNotExists {
+								int minimalAmountOfPlayers, int maximalAmountOfPlayers, boolean spectatingMode) throws UserNotLoggedIn, UserNotExists {
 		return s.createGame(username,gameType, buyInPolicy, chipPolicy,
 				minimumBet, minimalAmountOfPlayers, maximalAmountOfPlayers, spectatingMode);
 	}
@@ -82,7 +82,7 @@ public class Handler {
 	public void handleTerminateGame(int gameID) {
 		s.terminateGame(gameID);
 	}
-	
+
 	public void handleClearLoggedInUsers() {
 		s.clearLoggedInUsers();
 	}
@@ -98,5 +98,13 @@ public class Handler {
 	public int handleGetPlayersNum(int gameID){
 		return s.getPlayersNum(gameID);
 	}
-	
+
+	public void handleStartGame(String username, int gameID) throws UserNotLoggedIn, UserNotExists, NotYourTurn, NoMuchMoney, NotLegalAmount{
+		s.startGame(username,gameID);
+	}
+
+	public void handleLeaveGame(String username , int gameID) throws UserNotLoggedIn, CantJoin, NoMuchMoney, UserNotExists {
+		s.leaveGame(gameID , username);
+	}
+
 }

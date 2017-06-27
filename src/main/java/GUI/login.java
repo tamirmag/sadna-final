@@ -44,7 +44,6 @@ public class login {
     private class loginClicked implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("userName: " + user.getText()+ ",  password: "+ password.getText() + "  logged in");
             try {
                 Http_Client.login(user.getText(), password.getText());
                 JFrame homePageFrame = new JFrame("homePage");
@@ -66,6 +65,7 @@ public class login {
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.pack();
         loginFrame.setVisible(true);
+
     }
 }
 

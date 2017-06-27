@@ -16,11 +16,21 @@ public class chooseGame {
     private JButton chooseButton;
     String[] j= {"a","b","c","d"};
     private JComboBox<String> comboListOfGames;//=new JComboBox(j);
+    public JPanel spectateOrJoin;
+    private JButton filterButton;
+    private JComboBox findBy;
+    private JRadioButton findActiveGamesByRadioButton;
+    private JTextField textField1;
+    private JRadioButton bbb;
     private JLabel n1;
 
     private JLabel n2;
 
-    public chooseGame(String username,String[] gamesNum,JFrame thisFrame,JFrame prevFrame,String action){
+    private ButtonGroup btnGroup = new ButtonGroup();
+
+
+
+    public chooseGame(String username, String[] gamesNum, JFrame thisFrame, JFrame prevFrame, String action){
         //for (int i=0; i<gamesNum.length;i++)
         //    System.out.println(gamesNum[i]);
         //comboListOfGames.setModel(new javax.swing.DefaultComboBoxModel(gamesNum));
@@ -46,9 +56,15 @@ public class chooseGame {
                 if(action.equals("joinExistingGame")) {
                     try {
                         Http_Client.joinGame(gameNum,username);
-                        JFrame fr=Http_Client.getFrameFromGame(gameNumID+"");
-                        fr.setVisible(true);
+                        //JFrame fr=Http_Client.getFrameFromGame(""+gameNumID);
+                        //fr.setVisible(true);
+                        JFrame frame = new JFrame("game");
+                        frame.setContentPane(new gameGrid(username, gameNum, frame, false).gameGridView);
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        frame.pack();
+                        frame.setVisible(true);
                         thisFrame.setVisible(false);
+
                         //need to move the user to the game window
                     } catch (Exception e1) {
                         e1.printStackTrace();
@@ -83,6 +99,20 @@ public class chooseGame {
 //            showGameList.add(b);
 //        }
 
+        filterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String filterBy= (String) findBy.getSelectedItem();
+                try {
+                    switch (filterBy){
+                        case "find active games by pot size":
+                    }
+                    Http_Client.findActiveGamesByPotSize(0,username);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
 
